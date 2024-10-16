@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  telegramId Int      @unique
+  username   String
+  score      Int      @default(0)
+  lastLogin  DateTime?
+  messages   Message[]
+}
+
+model Message {
+  id      Int      @id @default(autoincrement())
+  content String
+  userId  Int
+  user    User     @relation(fields: [userId], references: [id])
+}
